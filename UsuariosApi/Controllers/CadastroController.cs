@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentResults;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using UsuariosApi.Data.Dtos;
 
 namespace UsuariosApi.Controllers
@@ -7,9 +9,20 @@ namespace UsuariosApi.Controllers
     [ApiController]
     public class CadastroController : ControllerBase
     {
+        private CadastroService _cadastroService;
+
+        public CadastroController(CadastroService cadastroService)
+        {
+            _cadastroService = cadastroService;
+        }
+
         public ActionResult CadastrarUsuario(CreateUsuarioDto createDto)
         {
-            return Ok();
+            Result result = _cadastroService.CadastraUsuario(createDto);
+
+            if (result.IsSuccess) return StatusCode(StatusCodes.Status201Created);
+             
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
 }
