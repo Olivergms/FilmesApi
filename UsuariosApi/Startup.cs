@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 using System;
 using UsuariosApi.Data;
+using UsuariosApi.Services;
 
 namespace UsuariosApi
 {
@@ -42,6 +42,7 @@ namespace UsuariosApi
 
             #region Registro de Servicos
             services.AddScoped<CadastroService, CadastroService>();
+            services.AddScoped<LoginService, LoginService>();
             #endregion
 
             //services.AddSwaggerGen(c =>

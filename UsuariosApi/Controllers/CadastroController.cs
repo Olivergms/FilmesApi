@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UsuariosApi.Data.Dtos;
+using UsuariosApi.Services;
 
 namespace UsuariosApi.Controllers
 {
@@ -21,7 +22,7 @@ namespace UsuariosApi.Controllers
             Result result = _cadastroService.CadastraUsuario(createDto);
 
             if (result.IsSuccess) return StatusCode(StatusCodes.Status201Created);
-             
+
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }

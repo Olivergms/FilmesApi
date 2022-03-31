@@ -1,13 +1,8 @@
-﻿
-using AutoMapper;
-using FilmesApi.Data;
-using FilmesApi.Services;
+﻿using FilmesApi.Services;
 using FilmesAPI.Data.Dtos;
-using FilmesAPI.Models;
 using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace FilmesAPI.Controllers
 {
@@ -36,7 +31,7 @@ namespace FilmesAPI.Controllers
             List<ReadFilmeDto> readDto = _filmeService.RecuperaFilmes(classificacaoEtaria);
 
             if (readDto != null) return Ok(readDto);
-            
+
             return NotFound();
         }
 

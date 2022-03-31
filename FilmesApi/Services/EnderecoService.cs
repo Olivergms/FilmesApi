@@ -3,10 +3,8 @@ using FilmesApi.Data;
 using FilmesApi.Models;
 using FilmesAPI.Data.Dtos;
 using FluentResults;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace FilmesApi.Services
 {
@@ -34,7 +32,7 @@ namespace FilmesApi.Services
         {
             var enderecos = _context.Enderecos.ToList();
 
-            if(enderecos != null) return _mapper.Map<IEnumerable<ReadEnderecoDto>>(enderecos);
+            if (enderecos != null) return _mapper.Map<IEnumerable<ReadEnderecoDto>>(enderecos);
 
             return null;
         }
@@ -44,7 +42,7 @@ namespace FilmesApi.Services
             Endereco endereco = _context.Enderecos.FirstOrDefault(endereco => endereco.Id == id);
             if (endereco != null)
             {
-                return _mapper.Map<ReadEnderecoDto>(endereco);                
+                return _mapper.Map<ReadEnderecoDto>(endereco);
             }
             return null;
         }

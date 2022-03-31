@@ -3,7 +3,6 @@ using FilmesApi.Data;
 using FilmesAPI.Data.Dtos;
 using FilmesAPI.Models;
 using FluentResults;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -53,7 +52,7 @@ namespace FilmesApi.Services
         }
 
         public ReadFilmeDto RecuperaFilmesPorId(int id)
-        {            
+        {
             Filme filme = _context.Filmes.FirstOrDefault(filme => filme.Id == id);
             if (filme != null)
             {
