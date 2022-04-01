@@ -19,7 +19,8 @@ namespace UsuariosApi.Services
             };
             #region Gerando token
             var chave = new SymmetricSecurityKey(
-                 Encoding.UTF8.GetBytes("AluraCursos"));
+                Encoding.UTF8.GetBytes("Curs0Alura0Identity0d0tnetc1inc0"));
+            //Encoding.UTF8.GetBytes("0asdjas09dja09djasdjsadajsd09asjd09sajcnzxn"));
 
             var credenciais = new SigningCredentials(chave, SecurityAlgorithms.HmacSha256);
 

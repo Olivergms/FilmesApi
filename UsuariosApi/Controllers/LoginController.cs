@@ -1,6 +1,7 @@
 ﻿using FluentResults;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using UsuariosApi.Data.Requests;
 using UsuariosApi.Services;
 
@@ -22,8 +23,8 @@ namespace UsuariosApi.Controllers
         {
             Result resultado = _loginService.LogaUsuario(request);
 
-            if (resultado.IsFailed) return StatusCode(StatusCodes.Status401Unauthorized);
-            return StatusCode(StatusCodes.Status200OK);
+            if (resultado.IsFailed) return StatusCode(StatusCodes.Status401Unauthorized, resultado.Errors);
+            return StatusCode(StatusCodes.Status200OK, resultado.Successes.FirstOrDefault());
         }
     }
 }

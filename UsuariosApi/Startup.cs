@@ -43,6 +43,7 @@ namespace UsuariosApi
             #region Registro de Servicos
             services.AddScoped<CadastroService, CadastroService>();
             services.AddScoped<LoginService, LoginService>();
+            services.AddScoped<TokenService, TokenService>();
             #endregion
 
             //services.AddSwaggerGen(c =>
