@@ -3,6 +3,7 @@ using FluentResults;
 using Microsoft.AspNetCore.Identity;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using UsuariosApi.Data.Dtos;
 using UsuariosApi.Data.Requests;
 using UsuariosApi.Modelos;
@@ -20,7 +21,7 @@ namespace UsuariosApi.Services
         {
             _mapper = mapper;
             _userManager = userManager;
-            //EmailService = emailService;
+            _emailService = emailService;
         }
 
         public Result CadastraUsuario(CreateUsuarioDto createDto)
@@ -34,10 +35,13 @@ namespace UsuariosApi.Services
             if (resultadoIdentity.Result.Succeeded)
             {
                 var code = _userManager.GenerateEmailConfirmationTokenAsync(usuarioIdentity).Result;
+
+                var encodedCode = HttpUtility.UrlEncode(code);
+
                 _emailService.EnviarEmail(new[] { usuarioIdentity.Email },
-                    "Link de ativação", 
-                    usuarioIdentity.Id, 
-                    code);
+                    "Link de ativação",
+                    usuarioIdentity.Id,
+                    encodedCode);
                 return Result.Ok().WithSuccess(code);
             }
             return Result.Fail("Falha ao cadastrar o usuário");

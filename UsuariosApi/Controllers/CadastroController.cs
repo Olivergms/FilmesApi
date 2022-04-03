@@ -29,15 +29,15 @@ namespace UsuariosApi.Controllers
             return StatusCode(StatusCodes.Status201Created, result.Successes.FirstOrDefault());
         }
 
-        [HttpPost("/ativa")]
-        public ActionResult AtivaContaUsuario(AtivaContaRequest request)
+        [HttpGet("/ativa")]
+        public ActionResult AtivaContaUsuario([FromQuery]AtivaContaRequest request)
         {
             Result resultado = _cadastroService.AtivaContaUsuario(request);
 
-            if (resultado.IsFailed) return StatusCode(StatusCodes.Status500InternalServerError, 
+            if (resultado.IsFailed) return StatusCode(StatusCodes.Status500InternalServerError,
                 resultado.Errors.FirstOrDefault());
 
-            return StatusCode(StatusCodes.Status200OK, resultado.Successes.FirstOrDefault());
+            return StatusCode(StatusCodes.Status200OK);
         }
     }
 }

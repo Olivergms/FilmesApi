@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace UsuariosApi.Data.Requests
 {
@@ -12,6 +8,6 @@ namespace UsuariosApi.Data.Requests
         public int UsuarioId { get; set; }
         [Required]
         public string CodigoAtivacao { get; set; }
-        
+
     }
 }

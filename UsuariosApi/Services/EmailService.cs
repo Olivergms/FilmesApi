@@ -1,16 +1,21 @@
 ﻿using MailKit.Net.Smtp;
+using Microsoft.Extensions.Configuration;
 using MimeKit;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using UsuariosApi.Modelos;
 
 namespace UsuariosApi.Services
 {
     public class EmailService
     {
-        internal void EnviarEmail(string[] destinatario, string assunto
+        private IConfiguration _configuration;
+
+        public EmailService(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
+        public void EnviarEmail(string[] destinatario, string assunto
             , int usuarioId, string code)
         {
             Mensagem mensagem = new Mensagem(destinatario, assunto, usuarioId, code);
@@ -26,8 +31,12 @@ namespace UsuariosApi.Services
             {
                 try
                 {
-                    client.Connect("conexão a fazer");
-                    //todo auth de email
+                    client.Connect(_configuration.GetValue<string>("EmailSettings:SmtpServer"),
+                        _configuration.GetValue<int>("EmailSettings:Port"), true);
+
+                    client.AuthenticationMechanisms.Remove("XOAUTH2");
+                    client.Authenticate(_configuration.GetValue<string>("EmailSettings:From"),
+                        _configuration.GetValue<string>("EmailSettings:Password"));
                     client.Send(msgEmail);
                 }
                 catch (Exception)
@@ -35,13 +44,18 @@ namespace UsuariosApi.Services
 
                     throw;
                 }
+                finally
+                {
+                    client.Disconnect(true);
+                    client.Dispose();
+                }
             }
         }
 
         private MimeMessage CriaCorpoEmail(Mensagem mensagem)
         {
             var mensagemEmail = new MimeMessage();
-            mensagemEmail.From.Add(new MailboxAddress("adicionar o remetente"));
+            mensagemEmail.From.Add(new MailboxAddress("Suporte FilmesApi",_configuration.GetValue<string>("EmailSettings:From")));
             mensagemEmail.To.AddRange(mensagem.Destinatario);
             mensagemEmail.Subject = mensagem.Assunto;
             mensagemEmail.Body = new TextPart(MimeKit.Text.TextFormat.Text)
