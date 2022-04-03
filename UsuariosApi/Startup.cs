@@ -36,7 +36,10 @@ namespace UsuariosApi
             );
 
             //registrando o identity
-            services.AddIdentity<IdentityUser<int>, IdentityRole<int>>()
+            services.AddIdentity<IdentityUser<int>, IdentityRole<int>>(
+                //email confirmado requerido
+                opt => opt.SignIn.RequireConfirmedEmail = true
+            )
                 //Irá usar a store para armazenar os dados
                 .AddEntityFrameworkStores<UsuarioContexto>();
 
