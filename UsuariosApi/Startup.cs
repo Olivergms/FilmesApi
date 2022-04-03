@@ -41,7 +41,9 @@ namespace UsuariosApi
                 opt => opt.SignIn.RequireConfirmedEmail = true
             )
                 //Irá usar a store para armazenar os dados
-                .AddEntityFrameworkStores<UsuarioContexto>();
+                .AddEntityFrameworkStores<UsuarioContexto>()
+                //usado para gerar token de ativação do email
+                .AddDefaultTokenProviders();
 
             #region Registro de Servicos
             services.AddScoped<CadastroService, CadastroService>();

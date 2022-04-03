@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FluentResults;
 using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
 using UsuariosApi.Data.Dtos;
 using UsuariosApi.Modelos;
 
@@ -22,9 +23,14 @@ namespace UsuariosApi.Services
             Usuario usuario = _mapper.Map<Usuario>(createDto);
             IdentityUser<int> usuarioIdentity = _mapper.Map<IdentityUser<int>>(usuario);
             //cria um usuario de forma assincrona
-            var resultadoIdentity = _userManager.CreateAsync(usuarioIdentity, createDto.Password);
+            Task<IdentityResult> resultadoIdentity = _userManager
+                .CreateAsync(usuarioIdentity, createDto.Password);
 
-            if (resultadoIdentity.Result.Succeeded) return Result.Ok();
+            if (resultadoIdentity.Result.Succeeded)
+            {
+                var code = _userManager.GenerateEmailConfirmationTokenAsync(usuarioIdentity).Result;
+                return Result.Ok().WithSuccess(code);
+            }
             return Result.Fail("Falha ao cadastrar o usuário");
         }
     }

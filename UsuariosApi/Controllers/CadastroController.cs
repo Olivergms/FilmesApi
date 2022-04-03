@@ -1,6 +1,7 @@
 ﻿using FluentResults;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using UsuariosApi.Data.Dtos;
 using UsuariosApi.Services;
 
@@ -21,9 +22,9 @@ namespace UsuariosApi.Controllers
         {
             Result result = _cadastroService.CadastraUsuario(createDto);
 
-            if (result.IsSuccess) return StatusCode(StatusCodes.Status201Created);
+            if (result.IsFailed) return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.FirstOrDefault());
 
-            return StatusCode(StatusCodes.Status500InternalServerError);
+            return StatusCode(StatusCodes.Status201Created, result.Successes.FirstOrDefault());
         }
     }
 }
