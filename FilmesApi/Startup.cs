@@ -1,12 +1,15 @@
 using FilmesApi.Data;
 using FilmesApi.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Text;
 
 namespace FilmesAPI
 {
@@ -26,6 +29,30 @@ namespace FilmesAPI
                 opts.UseLazyLoadingProxies()
                 .UseSqlServer(Configuration
                 .GetConnectionString("CinemaConnection")));
+
+            #region Configuração do jwt
+            services.AddAuthentication(auth =>
+            {
+                auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(token =>
+                {
+                    token.RequireHttpsMetadata = false;
+                    token.SaveToken = true;
+                    token.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        //chave do token
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding
+                        .UTF8.GetBytes("Curs0Alura0Identity0d0tnetc1inc0")),
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ClockSkew = TimeSpan.Zero
+                    };
+                });
+
+            #endregion
 
             #region Services
             services.AddScoped<FilmeService, FilmeService>();
@@ -50,6 +77,7 @@ namespace FilmesAPI
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
