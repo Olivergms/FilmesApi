@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using UsuariosApi.Data;
+using UsuariosApi.Modelos;
 using UsuariosApi.Services;
 
 namespace UsuariosApi
@@ -36,7 +37,7 @@ namespace UsuariosApi
             );
 
             //registrando o identity
-            services.AddIdentity<IdentityUser<int>, IdentityRole<int>>(
+            services.AddIdentity<CustomIdentityUser, IdentityRole<int>>(
                 //email confirmado requerido
                 opt => opt.SignIn.RequireConfirmedEmail = true
             )

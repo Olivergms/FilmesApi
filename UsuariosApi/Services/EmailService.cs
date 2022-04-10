@@ -55,7 +55,7 @@ namespace UsuariosApi.Services
         private MimeMessage CriaCorpoEmail(Mensagem mensagem)
         {
             var mensagemEmail = new MimeMessage();
-            mensagemEmail.From.Add(new MailboxAddress("Suporte FilmesApi",_configuration.GetValue<string>("EmailSettings:From")));
+            mensagemEmail.From.Add(new MailboxAddress("Suporte FilmesApi", _configuration.GetValue<string>("EmailSettings:From")));
             mensagemEmail.To.AddRange(mensagem.Destinatario);
             mensagemEmail.Subject = mensagem.Assunto;
             mensagemEmail.Body = new TextPart(MimeKit.Text.TextFormat.Text)

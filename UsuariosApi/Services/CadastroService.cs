@@ -2,7 +2,6 @@
 using FluentResults;
 using Microsoft.AspNetCore.Identity;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Web;
 using UsuariosApi.Data.Dtos;
 using UsuariosApi.Data.Requests;
@@ -14,22 +13,20 @@ namespace UsuariosApi.Services
     {
         private IMapper _mapper;
         //Gerenciador de usuario, irá gerenciar o identityUser
-        private UserManager<IdentityUser<int>> _userManager;
+        private UserManager<CustomIdentityUser> _userManager;
         private EmailService _emailService;
-        private RoleManager<IdentityRole<int>> _roleManager;
 
-        public CadastroService(IMapper mapper, UserManager<IdentityUser<int>> userManager, EmailService emailService, RoleManager<IdentityRole<int>> roleManager)
+        public CadastroService(IMapper mapper, UserManager<CustomIdentityUser> userManager, EmailService emailService, RoleManager<IdentityRole<int>> roleManager)
         {
             _mapper = mapper;
             _userManager = userManager;
             _emailService = emailService;
-            _roleManager = roleManager;
         }
 
         public Result CadastraUsuario(CreateUsuarioDto createDto)
         {
             Usuario usuario = _mapper.Map<Usuario>(createDto);
-            IdentityUser<int> usuarioIdentity = _mapper.Map<IdentityUser<int>>(usuario);
+            CustomIdentityUser usuarioIdentity = _mapper.Map<CustomIdentityUser>(usuario);
             //cria um usuario de forma assincrona
             var resultadoIdentity = _userManager
                 .CreateAsync(usuarioIdentity, createDto.Password).Result;

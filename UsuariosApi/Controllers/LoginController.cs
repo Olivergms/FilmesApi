@@ -32,7 +32,7 @@ namespace UsuariosApi.Controllers
         {
             Result resultado = _loginService.SolicitaResetSenhaUsuario(request);
 
-            if (resultado.IsFailed) return StatusCode(StatusCodes.Status401Unauthorized, 
+            if (resultado.IsFailed) return StatusCode(StatusCodes.Status401Unauthorized,
                 resultado.Errors.FirstOrDefault());
 
             return StatusCode(StatusCodes.Status200OK, resultado.Successes.FirstOrDefault());

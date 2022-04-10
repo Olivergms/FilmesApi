@@ -3,13 +3,14 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
+using UsuariosApi.Modelos;
 
 namespace UsuariosApi.Data
 {
     //IdentitydbContext possui um identity user, identificado pelo id int
     // um papel identificado por inteiro
     // e será identificado por um inteiro
-    public class UsuarioContexto : IdentityDbContext<IdentityUser<int>, IdentityRole<int>, int>
+    public class UsuarioContexto : IdentityDbContext<CustomIdentityUser, IdentityRole<int>, int>
     {
         private IConfiguration _configuration;
         public UsuarioContexto(DbContextOptions<UsuarioContexto> opt, IConfiguration configuration)
@@ -21,21 +22,21 @@ namespace UsuariosApi.Data
         {
             base.OnModelCreating(builder);
             #region Criação de usuario administrador
-            IdentityUser<int> admin = new IdentityUser<int>
+            CustomIdentityUser admin = new CustomIdentityUser
             {
                 UserName = "admin",
                 NormalizedUserName = "ADMIN",
-                Email = "admin@admin.com", 
+                Email = "admin@admin.com",
                 NormalizedEmail = "ADMIN@ADMIN.COM",
                 EmailConfirmed = true,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 Id = 99999
             };
 
-            PasswordHasher<IdentityUser<int>> hasher = new PasswordHasher<IdentityUser<int>>();
+            PasswordHasher<CustomIdentityUser> hasher = new PasswordHasher<CustomIdentityUser>();
             admin.PasswordHash = hasher.HashPassword(admin, _configuration.GetValue<string>("adminInfo:password"));
 
-            builder.Entity<IdentityUser<int>>().HasData(admin);
+            builder.Entity<CustomIdentityUser>().HasData(admin);
 
             #endregion
 
