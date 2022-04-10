@@ -1,6 +1,8 @@
+using FilmesApi.Authorization;
 using FilmesApi.Data;
 using FilmesApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -51,6 +53,20 @@ namespace FilmesAPI
                         ClockSkew = TimeSpan.Zero
                     };
                 });
+
+            #endregion
+
+
+            #region Configuração de idade minima
+            services.AddAuthorization(opt => 
+            {
+                opt.AddPolicy("IdadeMinima", policy =>
+                {
+                    policy.Requirements.Add(new IdadeMinimaRequiriment(18));
+                });                    
+            });
+
+            services.AddSingleton<IAuthorizationHandler, IdadeMinimaHandler>();
 
             #endregion
 
